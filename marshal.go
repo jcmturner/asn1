@@ -650,7 +650,7 @@ func makeField(v reflect.Value, params fieldParameters) (e encoder, err error) {
 //	omitempty:	causes empty slices to be skipped
 //	printable:	causes strings to be marshaled as ASN.1, PrintableString strings.
 //	utf8:		causes strings to be marshaled as ASN.1, UTF8 strings
-//	generalstring:	causes strings to be marshaled as ASN.1, GeneralString strings constrained to the IA5 characters.
+//	generalstring:	causes strings to be marshaled as ASN.1, GeneralString strings constrained to the IA5 characters. This was introduced to support KerberosString (RFC 4120; 5.2.1)
 func Marshal(val interface{}) ([]byte, error) {
 	e, err := makeField(reflect.ValueOf(val), fieldParameters{})
 	if err != nil {
