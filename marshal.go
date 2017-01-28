@@ -286,6 +286,7 @@ func makeIA5String(s string) (e encoder, err error) {
 	return stringEncoder(s), nil
 }
 
+
 func makeUTF8String(s string) encoder {
 	return stringEncoder(s)
 }
@@ -501,6 +502,8 @@ func makeBody(value reflect.Value, params fieldParameters) (e encoder, err error
 		switch params.stringType {
 		case TagIA5String:
 			return makeIA5String(v.String())
+		case TagGeneralString:
+			return makeIA5String(v.String())
 		case TagPrintableString:
 			return makePrintableString(v.String())
 		default:
@@ -647,6 +650,7 @@ func makeField(v reflect.Value, params fieldParameters) (e encoder, err error) {
 //	omitempty:	causes empty slices to be skipped
 //	printable:	causes strings to be marshaled as ASN.1, PrintableString strings.
 //	utf8:		causes strings to be marshaled as ASN.1, UTF8 strings
+//	generalstring:	causes strings to be marshaled as ASN.1, GeneralString strings constrained to the IA5 characters.
 func Marshal(val interface{}) ([]byte, error) {
 	e, err := makeField(reflect.ValueOf(val), fieldParameters{})
 	if err != nil {
