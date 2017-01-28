@@ -489,8 +489,11 @@ func makeBody(value reflect.Value, params fieldParameters) (e encoder, err error
 		default:
 			m := make([]encoder, l)
 
+			// Pass on the tags to the members but need to unset explicit switch and implicit value
+			params.explicit = false
+			params.tag = nil
 			for i := 0; i < l; i++ {
-				m[i], err = makeField(v.Index(i), fp)
+				m[i], err = makeField(v.Index(i), params)
 				if err != nil {
 					return nil, err
 				}
@@ -569,7 +572,8 @@ func makeField(v reflect.Value, params fieldParameters) (e encoder, err error) {
 		return nil, StructuralError{"explicit time type given to non-time member"}
 	}
 
-	if params.stringType != 0 && tag != TagPrintableString {
+	// Updated to accept a slice of strings
+	if params.stringType != 0 && !(tag == TagPrintableString || (v.Kind() == reflect.Slice && tag == 16 && v.Type().Elem().Kind() == reflect.String)){
 		return nil, StructuralError{"explicit string type given to non-string member"}
 	}
 
