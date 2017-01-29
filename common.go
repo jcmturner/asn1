@@ -80,8 +80,8 @@ type fieldParameters struct {
 	set          bool   // true iff this should be encoded as a SET
 	omitEmpty    bool   // true iff this should be omitted if empty when marshaling.
 
-			    // Invariants:
-			    //   if explicit is set, tag is non-nil.
+	// Invariants:
+	//   if explicit is set, tag is non-nil.
 }
 
 // Given a tag string with the format specified in the package comment,
