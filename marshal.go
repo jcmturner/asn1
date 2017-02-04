@@ -481,7 +481,7 @@ func marshalBody(out *forkableWriter, value reflect.Value, params fieldParameter
 			return
 		}
 
-		// Pass on the tags to the members but need to unset explicit switch and implicit value
+		// jtasn1 Pass on the tags to the members but need to unset explicit switch and implicit value
 		//var fp fieldParameters
 		params.explicit = false
 		params.tag = nil
@@ -564,7 +564,8 @@ func marshalField(out *forkableWriter, v reflect.Value, params fieldParameters) 
 		return StructuralError{"explicit time type given to non-time member"}
 	}
 
-	if params.stringType != 0 && !(tag == TagPrintableString || (v.Kind() == reflect.Slice && tag == 16 && v.Type().Elem().Kind() == reflect.String)){
+	// jtasn1 updated to allow slices of strings
+	if params.stringType != 0 && !(tag == TagPrintableString || (v.Kind() == reflect.Slice && tag == 16 && v.Type().Elem().Kind() == reflect.String)) {
 		return StructuralError{"explicit string type given to non-string member"}
 	}
 
